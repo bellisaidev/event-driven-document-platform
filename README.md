@@ -110,3 +110,23 @@ event-driven-document-platform/
 │  └─ decisions.md
 │
 └─ README.md
+
+```
+
+
+## Project Status
+
+🚧 Phase 0 — Foundations
+
+The project currently provides the foundational structure,
+service skeletons, and architectural documentation.
+Business logic and infrastructure integrations are introduced
+incrementally in subsequent phases.
+
+
+## Local Development
+
+This project uses Docker Compose for local development.
+
+```bash
+docker compose -f local/docker-compose.yml up -d

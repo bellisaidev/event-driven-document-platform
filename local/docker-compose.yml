@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: documents
+      POSTGRES_USER: documents
+      POSTGRES_PASSWORD: documents
+    ports:
+      - "5432:5432"
+
+  kafka:
+    image: bitnami/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ENABLE_KRAFT: "yes"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
