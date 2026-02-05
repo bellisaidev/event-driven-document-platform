@@ -64,3 +64,4 @@ The following decisions are intentionally deferred:
 These will be addressed incrementally in later phases to avoid premature optimization.
 
 **Status:** Accepted
+

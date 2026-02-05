@@ -3,9 +3,9 @@ spring:
     name: document-api
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/document_platform
-#    username: document_user
-#    password: document_pass
+    url: jdbc:postgresql://localhost:5432/documents
+    username: documents
+    password: documents
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -14,6 +14,8 @@ spring:
     open-in-view: false
     properties:
       hibernate:
+        type:
+          prefer_native_enum_types: true
         format_sql: true
         jdbc:
           time_zone: UTC
@@ -62,6 +64,9 @@ app:
   storage:
     bucket: doc-platform-dev
     presignExpirySeconds: 900   # 15 minutes
+  kafka:
+    topics:
+      documentUploaded: document.uploaded.v1
 
 # ============================
 # AWS (local-friendly defaults)
@@ -69,6 +74,9 @@ app:
 
 aws:
   region: eu-central-1
+  s3:
+    endpoint: http://localhost:4566
+    pathStyleAccess: true
 
 # ============================
 # Kafka (not active yet, Phase 2)

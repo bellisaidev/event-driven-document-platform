@@ -21,4 +21,11 @@ public class DocumentController {
     public ResponseEntity<CreateDocumentResponse> create(@Valid @RequestBody CreateDocumentRequest request) {
         return ResponseEntity.ok(documentService.create(request));
     }
+
+    @PostMapping("/{documentId}/complete")
+    public ResponseEntity<com.bellisaidev.platform.document_api.controller.dto.CompleteUploadResponse> complete(
+            @PathVariable java.util.UUID documentId
+    ) {
+        return ResponseEntity.ok(documentService.complete(documentId));
+    }
 }

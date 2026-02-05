@@ -9,15 +9,56 @@ services:
       POSTGRES_PASSWORD: documents
     ports:
       - "5432:5432"
+    volumes:
+      - docplatform_pg:/var/lib/postgresql/data
+
+  localstack:
+    image: localstack/localstack:3
+    container_name: docplatform-localstack
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=eu-central-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: docplatform-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
 
   kafka:
-    image: bitnami/kafka:latest
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: docplatform-kafka
+    depends_on:
+      - zookeeper
     ports:
       - "9092:9092"
     environment:
-      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+
+  # Listeners for host clients (your Spring app)
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:9092"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+
+  # Required for single-broker dev clusters
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+  # Convenience
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 
   redis:
     image: redis:7
     ports:
       - "6379:6379"
+
+volumes:
+  docplatform_pg:
