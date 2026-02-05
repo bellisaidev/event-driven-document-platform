@@ -116,17 +116,29 @@ event-driven-document-platform/
 
 ## Project Status
 
-🚧 Phase 0 — Foundations
+🚧 Phase 1 — Secure Ingestion API
 
-The project currently provides the foundational structure,
-service skeletons, and architectural documentation.
-Business logic and infrastructure integrations are introduced
-incrementally in subsequent phases.
+The project currently implements the complete secure ingestion flow:
+
+- Document metadata creation via REST API
+- Pre-signed S3 URLs for direct client-side uploads
+- Upload completion with idempotent state transitions
+- Transactional persistence of document metadata and status history
+- Publication of a `DocumentUploaded` domain event via Kafka
+
+A fully runnable local development environment is provided via Docker Compose
+(PostgreSQL, Kafka, LocalStack).
+
+Subsequent phases introduce orchestration, asynchronous processing, and
+read-optimized result APIs.
 
 
-## Local Development
+## Run Locally (Phase 1)
 
-This project uses Docker Compose for local development.
+Prerequisites:
+- Docker
+- Java 21
 
 ```bash
-docker compose -f local/docker-compose.yml up -d
+  docker compose -f local/docker-compose.yml up -d
+  ./gradlew :services:document-api:bootRun
